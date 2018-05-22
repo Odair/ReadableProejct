@@ -16,7 +16,7 @@ export const fetchCategories = () =>
 
 export const fetchPosts = category => {
     const url = category ? `${api}/${category}/posts` : `${api}/posts`;
-    fetch(url, { headers }).then(res => res.json()).then(data => data)
+    return fetch(url, { headers }).then(res => res.json()).then(data => data)
 }
 
 export const fetchPost = id =>

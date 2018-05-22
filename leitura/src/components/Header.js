@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap'
+import { ButtonToolbar, Button, Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap'
 import { fetchCategories } from '../actions/categories'
+import _ from 'lodash';
 
 class Header extends Component {
 
@@ -9,51 +10,31 @@ class Header extends Component {
     this.props.fetchCategories();
   }
 
-  render() {
+  categoryList() {
     const { categories } = this.props;
+    if (categories) {
+      return _.map(categories, category => {
+        return (
+          
+        <Button eventKey={category.path}  bsSize="large">{category.name}</Button>
+        );
+      });
+    }
+  }
 
+  render() {
     return (
-      <Navbar inverse collapseOnSelect>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <a href="#brand">React-Bootstrap</a>
-          </Navbar.Brand>
-          <Navbar.Toggle />
-        </Navbar.Header>
-        <Navbar.Collapse>
-          <Nav>
-            <NavItem eventKey={1} href="#">
-              Link
-                </NavItem>
-            <NavItem eventKey={2} href="#">
-              Link
-                </NavItem>
-            <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
-              {categories[0] && categories.map((category, key) => {
-                <MenuItem eventKey={key}>{category.name}</MenuItem>
-              })}
-            </NavDropdown>
-          </Nav>
-          <Nav pullRight>
-            <NavItem eventKey={1} href="#">
-              Link Right
-                </NavItem>
-            <NavItem eventKey={2} href="#">
-              Link Right
-                </NavItem>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+      <ButtonToolbar>
+          {this.categoryList()}
+      </ButtonToolbar>
+      
     );
   }
 }
 
-const mapStateToProps = ({ categories }) => ({
-  categories,
-})
 
-const mapDispatchToProps = dispatch => ({
-  fetchCategories: () => dispatch(fetchCategories())
-})
+function mapStateToProps(state) {
+  return { categories: state.categories }
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, { fetchCategories })(Header);

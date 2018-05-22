@@ -14,11 +14,11 @@ export const receivePosts = posts => {
     }
 }
 
-export const fetchPosts = () => {
+export const fetchAllPosts = () => {
     return dispatch => {
         dispatch(requestPosts())
         return blogAPI.fetchPosts()
-        .then(posts => dispatch(requestPosts(posts)))
+        .then(posts => dispatch(receivePosts(posts)))
     }
 
 }

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
-import { fetchCategories, fetchPosts } from '../utils/blogAPI';
 import Header from '../components/Header'
-import Posts from '../containers/Posts'
+import PostsList from '../components/PostsList'
 
 class App extends Component {
 
@@ -10,7 +9,7 @@ class App extends Component {
     return (
       <div className="App">
         <Header />
-        <Posts />
+        <PostsList />
       </div>
     );
   }
