@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import * as blogAPI from '../utils/blogAPI'
 
 
@@ -10,15 +11,20 @@ export const requestComments = comments => {
 export const receiveComments = comments => {
     return {
         type: 'RECEIVE_COMMENTS',
-        posts
+        comments
     }
 }
 
-export const fetchComments = (id) => {
+export function fetchComments(postId) {
     return dispatch => {
-        dispatch(requestComments())
-        return blogAPI.fetchComments(id)
-        .then(posts => dispatch(receiveComments(comments)))
+        requestComments()
+        blogAPI.fetchComments(postId)
+            .then(comments => {
+                dispatch(receiveComments(comments))
+            })
     }
 }
- 
+
+
+
+

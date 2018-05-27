@@ -73,7 +73,8 @@ export const deletePost = id =>
 
 export const fetchComments = id => {
     const url = `${api}/posts/${id}/comments`;
-    fetch(url, { headers }).then(res => res.json()).then(data => data)
+    return fetch(url, { headers }).then(res => res.json()).then(data => data)
+     
 }
 
 export const fetchComment = id =>

@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Grid, Row, Col } from 'react-bootstrap'
 import { fetchCategories } from '../actions/categories'
+import { reduxForm, Field } from 'redux-form';
+import { AddPost } from '../actions/posts'
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
@@ -66,20 +68,6 @@ const styles = theme => ({
   },
 });
 
-const ranges = [
-  {
-    value: '0-20',
-    label: '0 to 20',
-  },
-  {
-    value: '21-50',
-    label: '21 to 50',
-  },
-  {
-    value: '51-100',
-    label: '51 to 100',
-  },
-];
 
 class Header extends Component {
 
@@ -104,6 +92,10 @@ class Header extends Component {
     this.setState({ open: false });
   };
 
+  onSubmit = (values) => {
+    this.props.AddPost(values);
+  }
+
   categoryList() {
     const { categories, classes } = this.props;
 
@@ -122,18 +114,15 @@ class Header extends Component {
 
   render() {
 
-    const { categories, classes } = this.props;
-    const { value } = this.state;
+    const { categories, classes, handleSubmit } = this.props;
+    const { value, idCategory } = this.state;
     return (
 
       <Grid>
         <AppBar position="static">
           <Toolbar>
-            <IconButton className="menuButton" color="inherit" aria-label="Menu">
-              <MenuIcon />
-            </IconButton>
             <Typography variant="title" color="inherit" className="flex">
-              Title
+              READable
           </Typography>
             <Button color="inherit">Login</Button>
           </Toolbar>
@@ -158,74 +147,51 @@ class Header extends Component {
           open={this.state.open}
           onClose={this.handleClose}
         >
-          <div style={getModalStyle()} className={classes.paper}>
-            <div className={classes.root}>
-              <TextField
-                label="With normal TextField"
-                id="simple-start-adornment"
-                className={classNames(classes.margin, classes.textField)}
-                InputProps={{
-                  startAdornment: <InputAdornment position="start">Kg</InputAdornment>,
-                }}
-              />
-              <TextField
-                select
-                label="With Select"
-                className={classNames(classes.margin, classes.textField)}
-                value={this.state.weightRange}
-                InputProps={{
-                  startAdornment: <InputAdornment position="start">Kg</InputAdornment>,
-                }}
-              >
-                {ranges.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <FormControl fullWidth className={classes.margin}>
-                <InputLabel htmlFor="adornment-amount">Amount</InputLabel>
-                <Input
-                  id="adornment-amount"
-                  value={this.state.amount}
-                  startAdornment={<InputAdornment position="start">$</InputAdornment>}
+          <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+            <div style={getModalStyle()} className={classes.paper}>
+              <div className={classes.root}>
+                <TextField
+                  label="Title"
+                  name="title"
+                  id="simple-start-adornment"
+                  className={classNames(classes.margin, classes.textField)}
                 />
-              </FormControl>
-              <FormControl
-                className={classNames(classes.margin, classes.withoutLabel, classes.textField)}
-                aria-describedby="weight-helper-text"
-              >
-                <Input
-                  id="adornment-weight"
-                  value={this.state.weight}
-                  endAdornment={<InputAdornment position="end">Kg</InputAdornment>}
-                  inputProps={{
-                    'aria-label': 'Weight',
-                  }}
-                />
-                <FormHelperText id="weight-helper-text">Weight</FormHelperText>
-              </FormControl>
-              <FormControl className={classNames(classes.margin, classes.textField)}>
-                <InputLabel htmlFor="adornment-password">Password</InputLabel>
-                <Input
-                  id="adornment-password"
-                  type={this.state.showPassword ? 'text' : 'password'}
-                  value={this.state.password}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="Toggle password visibility"
-                        onClick={this.handleClickShowPassword}
-                        onMouseDown={this.handleMouseDownPassword}
-                      >
-                        {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
+                <TextField
+                  select
+                  label="Category"
+                  name="category"
+                  className={classNames(classes.margin, classes.textField)}
+                >
+                  {_.map(categories, option => (
+                    <MenuItem key={option.path} value={option.name}>
+                      {option.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                <FormControl fullWidth className={classes.margin}>
+                  <InputLabel htmlFor="adornment-amount">Post content</InputLabel>
+                  <Input
+                    id="adornment-amount"
+                    nmae="body"
+                  />
+                </FormControl>
+                <FormControl
+                  className={classNames(classes.margin, classes.withoutLabel, classes.textField)}
+                  aria-describedby="weight-helper-text"
+                >
+                  <InputLabel>Author</InputLabel>
+                  <Input
+                    id="adornment-weight"
+                    name="author"
+
+                  />
+                  <FormHelperText id="weight-helper-text">Weight</FormHelperText>
+                </FormControl>
+                <Button type="submit" bsStyle="primary">Submit</Button>
+                <Button type="button" bsStyle="danger" onClick={this.handleClose} >Cancel</Button>
+              </div>
             </div>
-          </div>
+          </form>
         </Modal>
       </Grid>
 
@@ -237,5 +203,6 @@ class Header extends Component {
 function mapStateToProps(state) {
   return { categories: state.categories }
 }
-const SimpleModalWrapped = connect(mapStateToProps, { fetchCategories })(withStyles(styles)(Header));
-export default SimpleModalWrapped;
+export default reduxForm({
+  form: 'CreatePostForm'
+})(connect(mapStateToProps, { fetchCategories, AddPost })(withStyles(styles)(Header)));
