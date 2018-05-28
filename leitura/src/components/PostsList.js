@@ -145,7 +145,7 @@ class PostList extends Component {
                                 <IconButton onClick={() => votePost(post.id, 'downVote')} color="primary" aria-label="Unlike">
                                     <ThumbDown />
                                 </IconButton>
-                                <IconButton aria-label="Comments">
+                                <IconButton href={`/${post.category}/${post.id}`}  aria-label="Comments">
                                     <Badge badgeContent={post.commentCount} color="primary">
                                         <ChatBubbleOutLine color="primary" />
                                     </Badge>
@@ -154,22 +154,7 @@ class PostList extends Component {
                                 <Typography component="p">
                                     Date: <Moment format="DD/MM/YYYY">{post.timestamp}</Moment>
                                 </Typography>
-                                <IconButton
-                                    className={classnames(classes.expand, {
-                                        [classes.expandOpen]: this.state.expanded,
-                                    })}
-                                    onClick={this.handleExpandClick}
-                                    aria-expanded={this.state.expanded}
-                                    aria-label="Show more"
-                                >
-                                    <ExpandMoreIcon />
-                                </IconButton>
                             </CardActions>
-                            <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-                                <CardContent>
-                                    <Comments postCategory={post.category} postId={post.id} />
-                                </CardContent>
-                            </Collapse>
                         </Card>
                     </Grid>
                 );
