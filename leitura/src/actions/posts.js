@@ -15,6 +15,13 @@ export const receivePosts = posts => {
     }
 }
 
+export const requestVote = (post) => {
+    return {
+        type: 'VOTE_POST',
+        payload: post
+    };
+}
+
 export const addPost = (data) => {
     return {
         type: 'CREATE_POST',
@@ -57,8 +64,8 @@ export const AddPost = (values) => {
 
     return dispatch => {
         blogAPI.addPost(data)
-            .then(res => {
-                dispatch(addPost(res.data));
+            .then(post => {
+                dispatch(addPost(post));
             });
 
     }
@@ -91,7 +98,7 @@ export const deletePost = (id, callback) => {
 export function votePost(id, vote) {
     return dispatch => {
         blogAPI.votePost(id, vote)
-            .then(res => dispatch({ type: 'VOTE_POST', payload: res.data }))
+            .then(post => dispatch(requestVote(post)))
     }
 }
 

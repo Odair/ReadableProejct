@@ -139,11 +139,20 @@ class PostDetail extends Component {
                 </Typography>
               </CardContent>
               <CardActions className={classes.actions} disableActionSpacing>
+                <IconButton href={`/${post.category}/${post.id}`} aria-label="Comments">
+                  <Badge badgeContent='+' color="primary">
+                    <ChatBubbleOutLine color="primary" />
+                  </Badge>
+                </IconButton>
                 <Typography component="p">
                   Date: <Moment format="DD/MM/YYYY">{post.timestamp}</Moment>
                 </Typography>
               </CardActions>
               <CardContent>
+                <Typography paragraph variant="body2">
+                  <h4>Comments</h4>
+                </Typography>
+
                 <Comments postCategory={post.category} postId={post.id} />
               </CardContent>
             </Card>

@@ -15,7 +15,7 @@ import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import red from '@material-ui/core/colors/red';
+import blue from '@material-ui/core/colors/blue';
 import ThumbUp from '@material-ui/icons/ThumbUp';
 import ThumbDown from '@material-ui/icons/ThumbDown';
 import ChatBubbleOutLine from '@material-ui/icons/ChatBubbleOutline';
@@ -59,12 +59,12 @@ const styles = theme => ({
         transform: 'rotate(180deg)',
     },
     avatar: {
-        backgroundColor: red[500],
+        backgroundColor: blue[500],
     },
 });
 
 class Comments extends Component {
-    state = { anchorEl: null};
+    state = { anchorEl: null };
 
     handleClick = event => {
         this.setState({
@@ -103,62 +103,15 @@ class Comments extends Component {
             return _.map(comments, (comment, id) => {
                 return (
                     <div>
-                        <Card className={classes.card}>
-                            <CardHeader
-                                avatar={
-                                    <Avatar aria-label="Recipe" className={classes.avatar}>
-                                        {comment.voteScore}
-                                    </Avatar>
-                                }
-                                action={
-                                    <div>
-                                        <IconButton onClick={this.handleClick} >
-                                            <MoreVertIcon />
-                                        </IconButton>
-                                        <Popover
-                                            open={Boolean(anchorEl)}
-                                            anchorEl={anchorEl}
-                                            onClose={this.handleClose}
-                                            anchorOrigin={{
-                                                vertical: 'bottom',
-                                                horizontal: 'center',
-                                            }}
-                                            transformOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'center',
-                                            }}
-                                        >
-                                            <BottomNavigation
-                                                showLabels
-                                                className={classes.root}
-                                            >
-                                                <BottomNavigationAction label="Edit" icon={<Edit />} />
-                                                <BottomNavigationAction label="Delete" icon={<Delete />} />
-                                            </BottomNavigation>
-                                        </Popover>
-                                    </div>
-                                }
-                                title={comment.title}
-                                subheader={comment.category}
-                            />
-                            <CardContent>
-                                <Typography component="p">
-                                    {comment.body}
-                                </Typography>
-                            </CardContent>
-                            <CardActions className={classes.actions} disableActionSpacing>
-                                <IconButton onClick={() => voteComment(comment.id, 'upVote')} color="primary" aria-label="Like">
-                                    <ThumbUp />
-                                </IconButton>
-                                <IconButton onClick={() => voteComment(comment.id, 'downVote')} color="primary" aria-label="Unlike">
-                                    <ThumbDown />
-                                </IconButton>
-
-                                <Typography component="p">
-                                    Date: <Moment format="DD/MM/YYYY">{comment.timestamp}</Moment>
-                                </Typography>
-                            </CardActions>
-                        </Card>
+                        
+                        <Divider />
+                        <Typography paragraph variant="body2">
+                            <Moment format="DD/MM/YYYY"> {comment.timestamp}</Moment> by {comment.author}
+                        </Typography>
+                        <Typography paragraph>
+                            <p>{comment.body}</p>
+                            <p>{comment.voteScore}</p>
+                        </Typography>
                     </div>
                 );
             });

@@ -103,7 +103,7 @@ class Header extends Component {
       return _.map(categories, category => {
         return (
 
-          <BottomNavigationAction href={`/${category.name}`} label={category.name} icon={<Category />} />
+          <Button color="inherit" href={`/${category.name}`} >{category.name}</Button>
 
 
 
@@ -124,21 +124,11 @@ class Header extends Component {
             <Typography variant="title" color="inherit" className="flex">
               READable
           </Typography>
-            <Button color="inherit">Login</Button>
+            <Button href={`/`} color="inherit">All</Button>
+            {this.categoryList()}
           </Toolbar>
         </AppBar>
-        <Row className="show-grid">
-          <BottomNavigation
-            value={value}
-            onChange={this.handleChange}
-            showLabels
-            className={classes.root}
-          >
-            <BottomNavigationAction href={`/`} label="All" icon={<Category />} />
-            {this.categoryList()}
-          </BottomNavigation>
-        </Row>
-        <Button onClick={this.handleOpen} variant="fab" color="primary" aria-label="add" className="button">
+        <Button href={`/post/form`}  variant="fab" color="primary" aria-label="add" className="button">
           <AddIcon />
         </Button>
         <Modal

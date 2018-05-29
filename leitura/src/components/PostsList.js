@@ -76,10 +76,9 @@ class PostList extends Component {
         this.setState({ expanded: !this.state.expanded });
     };
 
-    componentDidMount() {
+    componentWillMount() {
         const filter = this.props.match.params.category;
         this.props.fetchAllPosts(filter);
-        console.log(this.props)
     }
 
     deleteButtonPress = id => {
